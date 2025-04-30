@@ -1,6 +1,7 @@
 package aapi
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -185,4 +186,14 @@ func (service *RouteService) DeleteRoute(id string, opt *DeleteRouteOptions) (*h
 
 	resp, err := service.client.Do(req, nil)
 	return resp, err
+}
+
+// MarshalBinary encodes route into byte array
+func (r Route) MarshalBinary() ([]byte, error) {
+	return json.Marshal(r)
+}
+
+// UnmarshalBinary decodes byte array into route
+func (r *Route) UnmarshalBinary(data []byte) error {
+	return json.Unmarshal(data, r)
 }

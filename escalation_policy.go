@@ -1,6 +1,7 @@
 package aapi
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -185,4 +186,14 @@ func (service *EscalationService) DeleteEscalation(id string, opt *DeleteEscalat
 
 	resp, err := service.client.Do(req, nil)
 	return resp, err
+}
+
+// MarshalBinary encodes escalation into byte array
+func (e Escalation) MarshalBinary() ([]byte, error) {
+	return json.Marshal(e)
+}
+
+// UnmarshalBinary decodes byte array into escalation
+func (e *Escalation) UnmarshalBinary(data []byte) error {
+	return json.Unmarshal(data, e)
 }

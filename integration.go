@@ -1,6 +1,7 @@
 package aapi
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -90,7 +91,7 @@ type Label struct {
 }
 
 type KeyValueName struct {
-	Name	string `json:"name"`
+	Name string `json:"name"`
 }
 
 type ListIntegrationOptions struct {
@@ -215,4 +216,14 @@ func (service *IntegrationService) DeleteIntegration(id string, opt *DeleteInteg
 
 	resp, err := service.client.Do(req, nil)
 	return resp, err
+}
+
+// MarshalBinary encodes integration into byte array
+func (i Integration) MarshalBinary() ([]byte, error) {
+	return json.Marshal(i)
+}
+
+// UnmarshalBinary decodes byte array into integration
+func (i *Integration) UnmarshalBinary(data []byte) error {
+	return json.Unmarshal(data, i)
 }

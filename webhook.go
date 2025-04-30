@@ -1,6 +1,7 @@
 package aapi
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -185,4 +186,14 @@ func (service *WebhookService) DeleteWebhook(id string, opt *DeleteWebhookOption
 
 	resp, err := service.client.Do(req, nil)
 	return resp, err
+}
+
+// MarshalBinary encodes webhook into byte array
+func (w Webhook) MarshalBinary() ([]byte, error) {
+	return json.Marshal(w)
+}
+
+// UnmarshalBinary decodes byte array into webhook
+func (w *Webhook) UnmarshalBinary(data []byte) error {
+	return json.Unmarshal(data, w)
 }
